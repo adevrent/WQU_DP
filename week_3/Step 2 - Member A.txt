@@ -1,0 +1,60 @@
+import numpy as np
+
+def american_option_trinomial(S0, K, T, r, sigma, N, option_type='call'):
+    # Calculate parameters
+    dt = T / N
+    u = np.exp(sigma * np.sqrt(2 * dt))
+    d = 1 / u
+    m = 1
+
+    pu = ((np.exp((r - 0.5 * sigma**2) * dt / 2) - np.exp(-sigma * np.sqrt(dt / 2))) / 
+          (np.exp(sigma * np.sqrt(dt / 2)) - np.exp(-sigma * np.sqrt(dt / 2))))**2
+    pd = ((np.exp(sigma * np.sqrt(dt / 2)) - np.exp((r - 0.5 * sigma**2) * dt / 2)) / 
+          (np.exp(sigma * np.sqrt(dt / 2)) - np.exp(-sigma * np.sqrt(dt / 2))))**2
+    pm = 1 - pu - pd
+
+    discount = np.exp(-r * dt)
+
+    # Initialize asset prices at maturity
+    asset_prices = np.zeros((2 * N + 1, N + 1))
+    asset_prices[N, 0] = S0
+
+    for i in range(1, N + 1):
+        for j in range(N - i, N + i + 1, 2):
+            asset_prices[j, i] = S0 * (u ** ((j - N + i) // 2)) * (d ** ((N + i - j) // 2))
+
+    # Initialize option values at maturity
+    option_values = np.zeros((2 * N + 1, N + 1))
+
+    if option_type == 'call':
+        option_values[:, N] = np.maximum(0, asset_prices[:, N] - K)
+    elif option_type == 'put':
+        option_values[:, N] = np.maximum(0, K - asset_prices[:, N])
+
+    # Backward induction for the possibility of early exercise
+    for i in range(N - 1, -1, -1):
+        for j in range(N - i, N + i + 1, 2):
+            hold_value = (pu * option_values[j - 1, i + 1] +
+                          pm * option_values[j, i + 1] +
+                          pd * option_values[j + 1, i + 1]) * discount
+            if option_type == 'call':
+                exercise_value = max(0, asset_prices[j, i] - K)
+            elif option_type == 'put':
+                exercise_value = max(0, K - asset_prices[j, i])
+            option_values[j, i] = max(hold_value, exercise_value)
+
+    return option_values[N, 0]
+
+# Example usage
+S0 = 100  # Initial stock price
+K_arr = [70, 90, 100, 110, 130]   # Different strike prices for Deep OTM, OTM, ATM, ITM, and Deep ITM
+T = 1     # Time to maturity (in years)
+r = 0.05  # Risk-free rate
+sigma = 0.2  # Volatility
+N = 5    # Number of time steps
+
+for K in K_arr:
+    call_price = american_option_trinomial(S0, K, T, r, sigma, N, option_type='call')
+    put_price = american_option_trinomial(S0, K, T, r, sigma, N, option_type='put')
+    print(f"American Call Option Price for K = {K}: {np.round(call_price, 2)}")
+    print(f"American Put Option Price for K = {K}: {np.round(put_price, 2)}")
