@@ -32,9 +32,10 @@ n = 1  # Number of steps
 # Option params
 K = 195
 t = 0
+call_or_put = "C"
 
 # SEED
 np.random.seed(2)
 
-bs_opt_price = MC_price(S0, K, r, sigma, T, n, M, t, "C")
+bs_opt_price = MC_price(S0, K, r, sigma, T, n, M, t, call_or_put)
 print("bs_opt_price =", bs_opt_price)

@@ -92,26 +92,29 @@ def heston_opt_price_MC(K, t, MC_params, call_or_put="C"):
     return np.exp(-r * (T-t)) * payoffs.mean()
 
 # MC params
-v0 = 0.095
-kappa = 5
-sigma = 0.45
-theta = 0.15
-rho = -0.8
-S0 = 325.3  # Current underlying asset price
+v0 = 0.05
+kappa = 2
+sigma = 0.3
+theta = 0.04
+rho = -0.9
+S0 = 100  # Current underlying asset price
 r = 0.05  # Risk-free rate
 T = 1  # Number of years
-n = 252
-M = 15000  # Number of simulations
+n = 5
+M = 1  # Number of simulations
 
 # Option params
-K = 330
-r = 0.05
+K = 100
 t = 0
+call_or_put = "C"
 
 MC_params = [M, v0, kappa, theta, sigma, n, T, rho, r, S0]
 
 # SEED
 np.random.seed(2)
 
-heston_opt_price = heston_opt_price_MC(K, t, MC_params, "C")
-print("heston_opt_price =", heston_opt_price)
+# heston_opt_price = heston_opt_price_MC(K, t, MC_params, call_or_put)
+# print("heston_opt_price =", heston_opt_price)
+
+v_MC, S_MC = MC(M, v0, kappa, theta, sigma, n, T, rho, r, S0)
+print("v_MC =", v_MC)

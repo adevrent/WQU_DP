@@ -31,26 +31,27 @@ def merton_opt_price_MC(merton_paramlist, K, t, call_or_put="C"):
     
     return price
 
-lamb = 0.0  # Lambda of the model
+lamb = 0.75  # Lambda of the model
 mu = 0.5  # Mu
-delta = 0.75  # Delta
+delta = 0.25  # Delta
 
 r = 0.05  # Risk-free rate
-sigma = 0.45  # Volatility
-T = 3/12  # Maturity/time period (in years)
-S0 = 200  # Current Stock Price
+sigma = 0.2  # Volatility
+T = 1  # Maturity/time period (in years)
+S0 = 50  # Current Stock Price
 
-M = 20000  # Number of simulations (paths)
-n = 90  # Number of steps
+M = 10000  # Number of simulations (paths)
+n = 25  # Number of steps
 
 merton_paramlist = [M, lamb, mu, delta, r, sigma, T, S0, n]
 
 # Option params
-K = 195
+K = 40
 t = 0
+call_or_put = "P"
 
 # SEED
-np.random.seed(2)
+np.random.seed(0)
 
-merton_opt_price = merton_opt_price_MC(merton_paramlist, K, t, "C")
+merton_opt_price = merton_opt_price_MC(merton_paramlist, K, t, call_or_put)
 print("merton_opt_price =", merton_opt_price)
