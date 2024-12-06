@@ -32,7 +32,7 @@ def expectation_Qfun(state, action, weights, discount_factor=0.7):
   n_sim = 20
   Q_value = 0
   for _ in range(n_sim):
-    Q_value += 
+    Q_value += reward(state, action) + discount_factor * fun_approximation(transition(state, action), weights)
     ######COMPLETE HERE!!!!!!#######
   return (Q_value / n_sim)
 
@@ -52,7 +52,7 @@ def fitted_value_iteration(state_space, action_space,  max_iterations=1001, epsi
     for _ in range(500):
       gradient_FVI = np.zeros(3)
       for i in range(num_states):
-        gradient_FVI += 
+        gradient_FVI += 2 * feature_function(state_space[i]) * (fun_approximation(state_space[i], weights) - v[i])
         ######COMPLETE HERE!!!!!!#######
       weights -= learning_rate * gradient_FVI
 
