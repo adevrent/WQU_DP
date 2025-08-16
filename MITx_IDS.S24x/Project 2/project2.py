@@ -19,7 +19,7 @@ def construct_H_hat(H, r):
     S_r = np.hstack([S_r, np.zeros((S_r.shape[0], Vh.shape[0] - S_r.shape[1]))])
     H_hat = U @ S_r @ Vh
     print("H_hat.shape =", H_hat.shape)
-    
+
     return H_hat
 
 def read_between_dates(filename, start, end):
@@ -36,7 +36,7 @@ train_end = "2017-12-31"
 test_start = "2018-01-01"
 test_end = "2019-12-31"
 
-filename = r"C:\Users\adevr\WQU_DP\MITx_IDS.S24x\Project 2\data_zillow_house_prices-proj2.csv"
+filename = r"C:\Users\Atakan\atakan_python\WQU_DP\MITx_IDS.S24x\Project 2\data_zillow_house_prices-proj2.csv"
 
 train = read_between_dates(filename, train_start, train_end)
 test = read_between_dates(filename, test_start, test_end)
