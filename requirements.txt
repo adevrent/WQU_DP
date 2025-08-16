@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 numpy
 pandas
 matplotlib
 statsmodels
+=======
+numpy<2.0
+pandas==2.2.3
+torch==2.6.0
+torchvision==0.21.0
+tensorflow==2.18.0
+>>>>>>> 19d7ca000c7eeaaa8c1ed1f924e312d7ff913e51
